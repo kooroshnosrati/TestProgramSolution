@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TestDB1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tbl_AuthORTrans">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FName" Type="varchar" MaxLength="50" />
+          <Property Name="LName" Type="varchar" MaxLength="50" />
+          <Property Name="Nationality" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Book">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="AuthORTransID" Type="int" Nullable="false" />
+          <Property Name="CategorytID" Type="int" Nullable="false" />
+          <Property Name="ISBN" Type="int" />
+          <Property Name="PublishedNumber" Type="smallint" />
+          <Property Name="PublishedDate" Type="date" />
+          <Property Name="PageCount" Type="int" />
+          <Property Name="VolNumber" Type="smallint" />
+          <Property Name="VolCount" Type="smallint" />
+        </EntityType>
+        <EntityType Name="Tbl_BookCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tbl_BookSubCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Cities">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StateID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Countries">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_States">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Tbl_AuthORTrans_Tbl_Cities">
+          <End Role="Tbl_Cities" Type="Self.Tbl_Cities" Multiplicity="1" />
+          <End Role="Tbl_AuthORTrans" Type="Self.Tbl_AuthORTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Cities">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_AuthORTrans">
+              <PropertyRef Name="Nationality" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Book_Tbl_AuthORTrans">
+          <End Role="Tbl_AuthORTrans" Type="Self.Tbl_AuthORTrans" Multiplicity="1" />
+          <End Role="Tbl_Book" Type="Self.Tbl_Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_AuthORTrans">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Book">
+              <PropertyRef Name="AuthORTransID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Book_Tbl_BookSubCategory">
+          <End Role="Tbl_BookSubCategory" Type="Self.Tbl_BookSubCategory" Multiplicity="1" />
+          <End Role="Tbl_Book" Type="Self.Tbl_Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_BookSubCategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Book">
+              <PropertyRef Name="CategorytID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_BookSubCategory_Tbl_BookCategory">
+          <End Role="Tbl_BookCategory" Type="Self.Tbl_BookCategory" Multiplicity="1" />
+          <End Role="Tbl_BookSubCategory" Type="Self.Tbl_BookSubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_BookCategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_BookSubCategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Cities_Tbl_States">
+          <End Role="Tbl_States" Type="Self.Tbl_States" Multiplicity="1" />
+          <End Role="Tbl_Cities" Type="Self.Tbl_Cities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_States">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Cities">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_States_Tbl_Countries">
+          <End Role="Tbl_Countries" Type="Self.Tbl_Countries" Multiplicity="1" />
+          <End Role="Tbl_States" Type="Self.Tbl_States" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Countries">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_States">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TestDB1ModelStoreContainer">
+          <EntitySet Name="Tbl_AuthORTrans" EntityType="Self.Tbl_AuthORTrans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Book" EntityType="Self.Tbl_Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_BookCategory" EntityType="Self.Tbl_BookCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_BookSubCategory" EntityType="Self.Tbl_BookSubCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Cities" EntityType="Self.Tbl_Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Countries" EntityType="Self.Tbl_Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_States" EntityType="Self.Tbl_States" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tbl_AuthORTrans_Tbl_Cities" Association="Self.FK_Tbl_AuthORTrans_Tbl_Cities">
+            <End Role="Tbl_Cities" EntitySet="Tbl_Cities" />
+            <End Role="Tbl_AuthORTrans" EntitySet="Tbl_AuthORTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Book_Tbl_AuthORTrans" Association="Self.FK_Tbl_Book_Tbl_AuthORTrans">
+            <End Role="Tbl_AuthORTrans" EntitySet="Tbl_AuthORTrans" />
+            <End Role="Tbl_Book" EntitySet="Tbl_Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Book_Tbl_BookSubCategory" Association="Self.FK_Tbl_Book_Tbl_BookSubCategory">
+            <End Role="Tbl_BookSubCategory" EntitySet="Tbl_BookSubCategory" />
+            <End Role="Tbl_Book" EntitySet="Tbl_Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_BookSubCategory_Tbl_BookCategory" Association="Self.FK_Tbl_BookSubCategory_Tbl_BookCategory">
+            <End Role="Tbl_BookCategory" EntitySet="Tbl_BookCategory" />
+            <End Role="Tbl_BookSubCategory" EntitySet="Tbl_BookSubCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Cities_Tbl_States" Association="Self.FK_Tbl_Cities_Tbl_States">
+            <End Role="Tbl_States" EntitySet="Tbl_States" />
+            <End Role="Tbl_Cities" EntitySet="Tbl_Cities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_States_Tbl_Countries" Association="Self.FK_Tbl_States_Tbl_Countries">
+            <End Role="Tbl_Countries" EntitySet="Tbl_Countries" />
+            <End Role="Tbl_States" EntitySet="Tbl_States" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TestDB1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TestDB1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tbl_AuthORTrans" EntityType="TestDB1Model.Tbl_AuthORTrans" />
+          <EntitySet Name="Tbl_Book" EntityType="TestDB1Model.Tbl_Book" />
+          <EntitySet Name="Tbl_BookCategory" EntityType="TestDB1Model.Tbl_BookCategory" />
+          <EntitySet Name="Tbl_BookSubCategory" EntityType="TestDB1Model.Tbl_BookSubCategory" />
+          <EntitySet Name="Tbl_Cities" EntityType="TestDB1Model.Tbl_Cities" />
+          <EntitySet Name="Tbl_Countries" EntityType="TestDB1Model.Tbl_Countries" />
+          <EntitySet Name="Tbl_States" EntityType="TestDB1Model.Tbl_States" />
+          <AssociationSet Name="FK_Tbl_AuthORTrans_Tbl_Cities" Association="TestDB1Model.FK_Tbl_AuthORTrans_Tbl_Cities">
+            <End Role="Tbl_Cities" EntitySet="Tbl_Cities" />
+            <End Role="Tbl_AuthORTrans" EntitySet="Tbl_AuthORTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Book_Tbl_AuthORTrans" Association="TestDB1Model.FK_Tbl_Book_Tbl_AuthORTrans">
+            <End Role="Tbl_AuthORTrans" EntitySet="Tbl_AuthORTrans" />
+            <End Role="Tbl_Book" EntitySet="Tbl_Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Book_Tbl_BookSubCategory" Association="TestDB1Model.FK_Tbl_Book_Tbl_BookSubCategory">
+            <End Role="Tbl_BookSubCategory" EntitySet="Tbl_BookSubCategory" />
+            <End Role="Tbl_Book" EntitySet="Tbl_Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_BookSubCategory_Tbl_BookCategory" Association="TestDB1Model.FK_Tbl_BookSubCategory_Tbl_BookCategory">
+            <End Role="Tbl_BookCategory" EntitySet="Tbl_BookCategory" />
+            <End Role="Tbl_BookSubCategory" EntitySet="Tbl_BookSubCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Cities_Tbl_States" Association="TestDB1Model.FK_Tbl_Cities_Tbl_States">
+            <End Role="Tbl_States" EntitySet="Tbl_States" />
+            <End Role="Tbl_Cities" EntitySet="Tbl_Cities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_States_Tbl_Countries" Association="TestDB1Model.FK_Tbl_States_Tbl_Countries">
+            <End Role="Tbl_Countries" EntitySet="Tbl_Countries" />
+            <End Role="Tbl_States" EntitySet="Tbl_States" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Tbl_AuthORTrans">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nationality" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tbl_Cities" Relationship="TestDB1Model.FK_Tbl_AuthORTrans_Tbl_Cities" FromRole="Tbl_AuthORTrans" ToRole="Tbl_Cities" />
+          <NavigationProperty Name="Tbl_Book" Relationship="TestDB1Model.FK_Tbl_Book_Tbl_AuthORTrans" FromRole="Tbl_AuthORTrans" ToRole="Tbl_Book" />
+        </EntityType>
+        <EntityType Name="Tbl_Book">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AuthORTransID" Type="Int32" Nullable="false" />
+          <Property Name="CategorytID" Type="Int32" Nullable="false" />
+          <Property Name="ISBN" Type="Int32" />
+          <Property Name="PublishedNumber" Type="Int16" />
+          <Property Name="PublishedDate" Type="DateTime" Precision="0" />
+          <Property Name="PageCount" Type="Int32" />
+          <Property Name="VolNumber" Type="Int16" />
+          <Property Name="VolCount" Type="Int16" />
+          <NavigationProperty Name="Tbl_AuthORTrans" Relationship="TestDB1Model.FK_Tbl_Book_Tbl_AuthORTrans" FromRole="Tbl_Book" ToRole="Tbl_AuthORTrans" />
+          <NavigationProperty Name="Tbl_BookSubCategory" Relationship="TestDB1Model.FK_Tbl_Book_Tbl_BookSubCategory" FromRole="Tbl_Book" ToRole="Tbl_BookSubCategory" />
+        </EntityType>
+        <EntityType Name="Tbl_BookCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tbl_BookSubCategory" Relationship="TestDB1Model.FK_Tbl_BookSubCategory_Tbl_BookCategory" FromRole="Tbl_BookCategory" ToRole="Tbl_BookSubCategory" />
+        </EntityType>
+        <EntityType Name="Tbl_BookSubCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tbl_Book" Relationship="TestDB1Model.FK_Tbl_Book_Tbl_BookSubCategory" FromRole="Tbl_BookSubCategory" ToRole="Tbl_Book" />
+          <NavigationProperty Name="Tbl_BookCategory" Relationship="TestDB1Model.FK_Tbl_BookSubCategory_Tbl_BookCategory" FromRole="Tbl_BookSubCategory" ToRole="Tbl_BookCategory" />
+        </EntityType>
+        <EntityType Name="Tbl_Cities">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StateID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tbl_AuthORTrans" Relationship="TestDB1Model.FK_Tbl_AuthORTrans_Tbl_Cities" FromRole="Tbl_Cities" ToRole="Tbl_AuthORTrans" />
+          <NavigationProperty Name="Tbl_States" Relationship="TestDB1Model.FK_Tbl_Cities_Tbl_States" FromRole="Tbl_Cities" ToRole="Tbl_States" />
+        </EntityType>
+        <EntityType Name="Tbl_Countries">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tbl_States" Relationship="TestDB1Model.FK_Tbl_States_Tbl_Countries" FromRole="Tbl_Countries" ToRole="Tbl_States" />
+        </EntityType>
+        <EntityType Name="Tbl_States">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tbl_Cities" Relationship="TestDB1Model.FK_Tbl_Cities_Tbl_States" FromRole="Tbl_States" ToRole="Tbl_Cities" />
+          <NavigationProperty Name="Tbl_Countries" Relationship="TestDB1Model.FK_Tbl_States_Tbl_Countries" FromRole="Tbl_States" ToRole="Tbl_Countries" />
+        </EntityType>
+        <Association Name="FK_Tbl_AuthORTrans_Tbl_Cities">
+          <End Type="TestDB1Model.Tbl_Cities" Role="Tbl_Cities" Multiplicity="1" />
+          <End Type="TestDB1Model.Tbl_AuthORTrans" Role="Tbl_AuthORTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Cities">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_AuthORTrans">
+              <PropertyRef Name="Nationality" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Book_Tbl_AuthORTrans">
+          <End Type="TestDB1Model.Tbl_AuthORTrans" Role="Tbl_AuthORTrans" Multiplicity="1" />
+          <End Type="TestDB1Model.Tbl_Book" Role="Tbl_Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_AuthORTrans">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Book">
+              <PropertyRef Name="AuthORTransID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Book_Tbl_BookSubCategory">
+          <End Type="TestDB1Model.Tbl_BookSubCategory" Role="Tbl_BookSubCategory" Multiplicity="1" />
+          <End Type="TestDB1Model.Tbl_Book" Role="Tbl_Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_BookSubCategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Book">
+              <PropertyRef Name="CategorytID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_BookSubCategory_Tbl_BookCategory">
+          <End Type="TestDB1Model.Tbl_BookCategory" Role="Tbl_BookCategory" Multiplicity="1" />
+          <End Type="TestDB1Model.Tbl_BookSubCategory" Role="Tbl_BookSubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_BookCategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_BookSubCategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Cities_Tbl_States">
+          <End Type="TestDB1Model.Tbl_States" Role="Tbl_States" Multiplicity="1" />
+          <End Type="TestDB1Model.Tbl_Cities" Role="Tbl_Cities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_States">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_Cities">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_States_Tbl_Countries">
+          <End Type="TestDB1Model.Tbl_Countries" Role="Tbl_Countries" Multiplicity="1" />
+          <End Type="TestDB1Model.Tbl_States" Role="Tbl_States" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Countries">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_States">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TestDB1ModelStoreContainer" CdmEntityContainer="TestDB1Entities">
+          <EntitySetMapping Name="Tbl_AuthORTrans">
+            <EntityTypeMapping TypeName="TestDB1Model.Tbl_AuthORTrans">
+              <MappingFragment StoreEntitySet="Tbl_AuthORTrans">
+                <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Book">
+            <EntityTypeMapping TypeName="TestDB1Model.Tbl_Book">
+              <MappingFragment StoreEntitySet="Tbl_Book">
+                <ScalarProperty Name="VolCount" ColumnName="VolCount" />
+                <ScalarProperty Name="VolNumber" ColumnName="VolNumber" />
+                <ScalarProperty Name="PageCount" ColumnName="PageCount" />
+                <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
+                <ScalarProperty Name="PublishedNumber" ColumnName="PublishedNumber" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="CategorytID" ColumnName="CategorytID" />
+                <ScalarProperty Name="AuthORTransID" ColumnName="AuthORTransID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_BookCategory">
+            <EntityTypeMapping TypeName="TestDB1Model.Tbl_BookCategory">
+              <MappingFragment StoreEntitySet="Tbl_BookCategory">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_BookSubCategory">
+            <EntityTypeMapping TypeName="TestDB1Model.Tbl_BookSubCategory">
+              <MappingFragment StoreEntitySet="Tbl_BookSubCategory">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Cities">
+            <EntityTypeMapping TypeName="TestDB1Model.Tbl_Cities">
+              <MappingFragment StoreEntitySet="Tbl_Cities">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Countries">
+            <EntityTypeMapping TypeName="TestDB1Model.Tbl_Countries">
+              <MappingFragment StoreEntitySet="Tbl_Countries">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_States">
+            <EntityTypeMapping TypeName="TestDB1Model.Tbl_States">
+              <MappingFragment StoreEntitySet="Tbl_States">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
